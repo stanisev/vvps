@@ -11,14 +11,12 @@ import org.springframework.http.ResponseEntity;
 import vvps.stanisev.project_413.entity.Response;
 import vvps.stanisev.project_413.entity.StudentLogEntity;
 import vvps.stanisev.project_413.service.ExcelFilter;
+import vvps.stanisev.project_413.utils.TestUtils;
 
 import java.util.List;
 
-import static java.time.LocalDateTime.now;
-import static java.util.Map.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.springframework.http.HttpStatus.OK;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExcelControllerTest {
@@ -35,7 +33,7 @@ public class ExcelControllerTest {
     }
 
     @Test
-    void shouldCount302Entities() {
+    void shouldTestCountTotalEntitiesOf302() {
         // GIVEN
         int count = 302;
 
@@ -48,14 +46,66 @@ public class ExcelControllerTest {
     }
 
     @Test
-    void shouldShowTheFirstFilteredEntity() {
+    void shouldTestShowTheFirstFilteredEntity() {
         // GIVEN
-        ResponseEntity<Response> mockResponse = mockTestResponse();
+        ResponseEntity<Response> mockResponse = TestUtils.mockTestResponse(excelFilter.filterExcel());
 
         // WHEN
         ResponseEntity<Response> entities = excelController.getFilteredData();
 
         // THEN
+        AsserEquals(mockResponse, entities);
+    }
+
+    @Test
+    void shouldTestAbsoluteMethodResponse() {
+        // GIVEN
+        ResponseEntity<Response> mockResponse = TestUtils.mockAbsoluteResponse(excelFilter);
+
+        // WHEN
+        ResponseEntity<Response> entities = excelController.getAbsoluteCount();
+
+        // THEN
+        AsserEquals(mockResponse, entities);
+    }
+
+    @Test
+    void shouldTestRelativeMethodResponse() {
+        // GIVEN
+        ResponseEntity<Response> mockResponse = TestUtils.mockRelativeResponse(excelFilter);
+
+        // WHEN
+        ResponseEntity<Response> entities = excelController.getPercentCount();
+
+        // THEN
+        AsserEquals(mockResponse, entities);
+    }
+
+    @Test
+    void shouldTestAverageCountMethodResponse() {
+        // GIVEN
+        ResponseEntity<Response> mockResponse = TestUtils.mockAverageCountResponse(excelFilter);
+
+        // WHEN
+        ResponseEntity<Response> entities = excelController.getAverageCount();
+
+        // THEN
+        AsserEquals(mockResponse, entities);
+    }
+
+    @Test
+    void shouldTestDeviationCountMethodResponse() {
+        // GIVEN
+        ResponseEntity<Response> mockResponse = TestUtils.mockDeviationCountResponse(excelFilter);
+
+        // WHEN
+        ResponseEntity<Response> entities = excelController.getDeviationCount();
+
+        // THEN
+        AsserEquals(mockResponse, entities);
+    }
+
+    private void AsserEquals(ResponseEntity<Response> mockResponse, ResponseEntity<Response> entities) {
         assertEquals(mockResponse.getBody().getData(), entities.getBody().getData());
         assertEquals(mockResponse.getBody().getMessage(), entities.getBody().getMessage());
         assertEquals(mockResponse.getBody().getStatus(), entities.getBody().getStatus());
@@ -63,17 +113,5 @@ public class ExcelControllerTest {
         assertEquals(mockResponse.getBody().getTimeStamp().getYear(), entities.getBody().getTimeStamp().getYear());
         assertNull(entities.getBody().getReason());
         assertNull(entities.getBody().getDeveloperMessage());
-    }
-
-    private ResponseEntity<Response> mockTestResponse() {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timeStamp(now())
-                        .data(of("filtered", excelFilter.filterExcel()))
-                        .message("Filtered Data retrieved")
-                        .status(OK)
-                        .statusCode(OK.value())
-                        .build()
-        );
     }
 }

@@ -8,8 +8,8 @@ import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static vvps.stanisev.project_413.constants.FilterConstants.FILE_PATH;
-import static vvps.stanisev.project_413.constants.FilterConstants.FILTER;
+import static vvps.stanisev.project_413.constants.HelperConstants.FILE_PATH;
+import static vvps.stanisev.project_413.constants.HelperConstants.FILTER;
 
 @Service
 public class ExcelFilter {
@@ -62,17 +62,24 @@ public class ExcelFilter {
     }
 
     public Float deviation(Map<String, Float> map, Collection<StudentLogEntity> entities) {
+        // Algorithm
+        // 1. Find the average value.
         float average = countAverage(map, entities);
+
+        // 2. For each value, find the square of the difference between the specific value of the data set and the mean.
         map.entrySet().forEach(set -> set.setValue((float) Math.pow((set.getValue() - average), 2)));
 
+        // 3. Add the values from step 2.
         float count = 0;
         Set<Map.Entry<String, Float>> entries = map.entrySet();
         for (Map.Entry<String, Float> mapEntry : entries) {
             count += mapEntry.getValue();
         }
 
+        // 4. Divide the number of values in the data set.
         float stats = count / map.size();
 
+        // 5. Calculate the square root of the amount obtained.
         return (float) Math.sqrt(stats);
     }
 }
