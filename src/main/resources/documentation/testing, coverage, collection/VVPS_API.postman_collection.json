@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "a5f22f72-db50-4df4-ad38-43d32b2da117",
+		"name": "VVPS API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Filter Data",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "filter",
+						"value": "Wiki page updated",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				},
+				"description": "Reads excel's table and filters data by given filter ( in this case - \"Wiki page updated\" )"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Absoulte Value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should return status OK (200) \", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should test absolute value objects\", function() {\r",
+							"    let response = pm.response.json();\r",
+							"    pm.expect(response.data.absolute).to.have.keys('Wiki: Избор нa тема за проект (40 т.)', 'Wiki: Курсова задача/ реферат (30 т.)', 'Wiki: Защита на проект').and.to.be.an(\"object\");\r",
+							"    \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "filter",
+						"value": "Wiki page updated",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/count/absolute",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"count",
+						"absolute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Deviation",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "filter",
+						"value": "Wiki page updated",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/filter/count/deviation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"filter",
+						"count",
+						"deviation"
+					]
+				},
+				"description": "Returns standard deviation of the filtered data."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Average Value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should return status OK (200) \", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"let jsonData = pm.response.json();"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "filter",
+						"type": "text",
+						"value": "Wiki page updated",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/count/average",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"count",
+						"average"
+					]
+				},
+				"description": "Return average falue of filtered excel's data"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Relative Value (Percentage)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "filter",
+						"type": "text",
+						"value": "Wiki page updated",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/count/relative",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"count",
+						"relative"
+					]
+				},
+				"description": "Return relative value (in percentage) of filtered data."
+			},
+			"response": []
+		}
+	]
+}

@@ -82,7 +82,7 @@ public class ExcelControllerTest {
     }
 
     @Test
-    void shouldTestAverageCountMethodResponse() {
+        void shouldTestAverageCountMethodResponse() {
         // GIVEN
         ResponseEntity<Response> mockResponse = TestUtils.mockAverageCountResponse(excelFilter);
 
