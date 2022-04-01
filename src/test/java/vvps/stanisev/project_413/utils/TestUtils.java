@@ -32,15 +32,15 @@ public class TestUtils {
     }
 
     public static ResponseEntity<Response> mockAbsoluteResponse(ExcelFilter filter) {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(now())
-                            .data(of("absolute", filter.filterDataByKey(filter.filterExcel())))
-                            .message("Count Absolute frequency:")
-                            .status(OK)
-                            .statusCode(OK.value())
-                            .build()
-            );
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of("absolute", filter.filterDataByKey(filter.filterExcel())))
+                        .message("Count Absolute frequency:")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
     }
 
     public static ResponseEntity<Response> mockRelativeResponse(ExcelFilter filter) {

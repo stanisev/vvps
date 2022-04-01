@@ -1,6 +1,7 @@
 package vvps.stanisev.project_413.service;
 
 import com.poiji.bind.Poiji;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import vvps.stanisev.project_413.entity.StudentLogEntity;
 
@@ -12,15 +13,22 @@ import static vvps.stanisev.project_413.constants.HelperConstants.FILE_PATH;
 import static vvps.stanisev.project_413.constants.HelperConstants.FILTER;
 
 @Service
+@Slf4j
 public class ExcelFilter {
     public Collection<StudentLogEntity> filterExcel() {
-        File file = new File(FILE_PATH);
-        List<StudentLogEntity> entities = Poiji.fromExcel(file, StudentLogEntity.class);
+        try {
+            File file = new File(FILE_PATH);
+            List<StudentLogEntity> entities = Poiji.fromExcel(file, StudentLogEntity.class);
 
-        return entities
-                .stream()
-                .filter(eventName -> FILTER.equals(eventName.getEventName()))
-                .collect(Collectors.toList());
+            return entities
+                    .stream()
+                    .filter(eventName -> FILTER.equals(eventName.getEventName()))
+                    .collect(Collectors.toList());
+        } catch (Exception exception) {
+            log.error("Error occurred while working with file:", exception);
+        }
+
+        return null;
     }
 
     public Map<String, Float> filterDataByKey(Collection<StudentLogEntity> entities) {
